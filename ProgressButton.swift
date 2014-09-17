@@ -18,25 +18,10 @@ import QuartzCore
     
     var borderView: UIView!
     
-    var startAnimation: NSTimeInterval!
-    var endAnimation: NSTimeInterval!
-    
     var originalFrame: CGRect!
     var smallFrame: CGRect!
     
     var isLoading = false
-    
-    @IBInspectable var start: Double = 2.0 {
-        didSet {
-            startAnimation = start
-        }
-    }
-    
-    @IBInspectable var end: Double = 2.0 {
-        didSet {
-            endAnimation = end
-        }
-    }
 
     @IBInspectable var borderColor: UIColor = UIColor.blueColor() {
         didSet {
@@ -117,7 +102,7 @@ import QuartzCore
         
         userInteractionEnabled = false
         
-        UIView.animateWithDuration(startAnimation, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .CurveEaseOut, animations: { () -> Void in
+        UIView.animateWithDuration(0.5, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .CurveEaseOut, animations: { () -> Void in
             
             self.frame = self.smallFrame
             self.borderView.frame = self.bounds
@@ -168,7 +153,7 @@ import QuartzCore
         
         isLoading = false
         
-        UIView.animateWithDuration(endAnimation, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .CurveEaseOut, animations: { () -> Void in
+        UIView.animateWithDuration(0.5, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .CurveEaseOut, animations: { () -> Void in
             
             self.frame = self.originalFrame
             self.borderView.frame = self.bounds
