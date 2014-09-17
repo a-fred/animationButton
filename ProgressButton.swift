@@ -9,7 +9,7 @@
 import UIKit
 import QuartzCore
 
-class ProgressButton: UIButton {
+@IBDesignable class ProgressButton: UIButton {
     
     var posCenter = CGPoint()
     var progressCircle = CAShapeLayer()
@@ -18,20 +18,47 @@ class ProgressButton: UIButton {
     
     var borderView: UIView!
     
+    var startAnimation: NSTimeInterval!
+    var endAnimation: NSTimeInterval!
+    
     var originalFrame: CGRect!
     var smallFrame: CGRect!
     
     var isLoading = false
+    
+    @IBInspectable var start: Double = 2.0 {
+        didSet {
+            startAnimation = start
+        }
+    }
+    
+    @IBInspectable var end: Double = 2.0 {
+        didSet {
+            endAnimation = end
+        }
+    }
 
-    var borderColor: UIColor! {
+    @IBInspectable var borderColor: UIColor = UIColor.blueColor() {
         didSet {
             borderView.layer.borderColor = borderColor.CGColor
         }
     }
     
-    var borderWidth: CGFloat! {
+    @IBInspectable var borderWidth: CGFloat = 2 {
         didSet {
             borderView.layer.borderWidth = borderWidth
+        }
+    }
+    
+    @IBInspectable var cornerRadius: CGFloat = 0 {
+        didSet {
+            borderView.layer.cornerRadius = cornerRadius
+        }
+    }
+    
+    @IBInspectable var textColor: UIColor = UIColor.blueColor() {
+        didSet{
+            self.setTitleColor(textColor, forState: .Normal)
         }
     }
     
@@ -53,11 +80,8 @@ class ProgressButton: UIButton {
         borderView = UIView(frame: bounds)
         borderView.userInteractionEnabled = false
         borderView.clipsToBounds = true
-        borderView.layer.cornerRadius = bounds.height * 0.5
+        borderView.layer.cornerRadius = cornerRadius
         addSubview(borderView)
-        
-        borderColor = UIColor.redColor()
-        borderWidth = 2.0
     
         self.addTarget(self, action: "highlight", forControlEvents: UIControlEvents.TouchDown)
         self.addTarget(self, action: "highlight", forControlEvents: UIControlEvents.TouchDragEnter)
@@ -93,11 +117,12 @@ class ProgressButton: UIButton {
         
         userInteractionEnabled = false
         
-        UIView.animateWithDuration(0.5, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .CurveEaseOut, animations: { () -> Void in
+        UIView.animateWithDuration(startAnimation, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .CurveEaseOut, animations: { () -> Void in
             
             self.frame = self.smallFrame
             self.borderView.frame = self.bounds
-                
+            
+            self.layer.backgroundColor = UIColor.clearColor().CGColor
             self.borderView.layer.backgroundColor = UIColor.clearColor().CGColor
             self.borderView.layer.borderColor = UIColor.grayColor().CGColor
             
@@ -113,13 +138,13 @@ class ProgressButton: UIButton {
                     self.isLoading = true
                     
                     self.posCenter = CGPoint(x: self.bounds.width/2, y: self.bounds.height/2)
-                    self.circleRadius = self.bounds.height * 0.5 - 1
+                    self.circleRadius = self.bounds.height * 0.5 - self.borderWidth * 0.5
                     self.circlePath = UIBezierPath(arcCenter: self.posCenter, radius: self.circleRadius, startAngle: CGFloat(-0.5 * M_PI), endAngle: CGFloat(1.5 * M_PI), clockwise: true)
                     
                     self.progressCircle.path = self.circlePath.CGPath
                     self.progressCircle.strokeColor = self.borderColor.CGColor
                     self.progressCircle.fillColor = UIColor.clearColor().CGColor
-                    self.progressCircle.lineWidth = 2
+                    self.progressCircle.lineWidth = self.borderWidth
                     self.progressCircle.strokeStart = 0
                     self.progressCircle.strokeEnd = 0
                     
@@ -143,7 +168,7 @@ class ProgressButton: UIButton {
         
         isLoading = false
         
-        UIView.animateWithDuration(0.5, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .CurveEaseOut, animations: { () -> Void in
+        UIView.animateWithDuration(endAnimation, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .CurveEaseOut, animations: { () -> Void in
             
             self.frame = self.originalFrame
             self.borderView.frame = self.bounds
