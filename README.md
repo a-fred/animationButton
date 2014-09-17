@@ -1,4 +1,4 @@
 animationButton
 ===============
 
-Separate class of UIButton - creates a progress animation
+Separate Swift class of UIButton - creates a progress animation
