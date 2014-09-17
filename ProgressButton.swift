@@ -69,18 +69,23 @@ class ProgressButton: UIButton {
     }
     
     func highlight() {
+        
         UIView.animateWithDuration(0.3, animations: { () -> Void in
             self.backgroundColor = self.borderColor
         })
+        
     }
     
     func unhighlight() {
+        
         UIView.animateWithDuration(0.3, animations: { () -> Void in
             self.backgroundColor = UIColor.clearColor()
         })
+        
     }
     
     func startLoading() {
+        
         originalFrame = frame
         smallFrame = frame
         smallFrame.size.width = smallFrame.height
@@ -127,6 +132,7 @@ class ProgressButton: UIButton {
     }
     
     func setProgress(progress: CGFloat) {
+        
         if isLoading {
             progressCircle.strokeEnd = progress
         }
